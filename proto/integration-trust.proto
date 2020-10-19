@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_package = "io.ecidentity.protocol.authority";
+option java_multiple_files = true;
+
+import "protocol-types.proto";
+
+service IntegrationTrustService{
+  rpc cert(CertificateRequest) returns (CertificateResponse) {}; // Request to get server certificate
+}
+
+message CertificateRequest {
+}
+
+message CertificateResponse {
+  CertificateResponsePayload payload = 1;
+  bytes signature = 2; // Response signature, verifiable with the public key inside the server certificate
+}
+
+message CertificateResponsePayload {
+  ResultCodeExtProtocol result_code = 1; // Result code
+  bytes server_certificate = 2; // Certificate encoded to hexadecimal string
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option java_package = "io.ecidentity.protocol.types";
+option java_multiple_files = true;
+
+enum KeyEntryTypeProtocol {
+  EMAIL = 0; // Key type with certificate containing confirmed email address
+  PERSONAL = 1; // Key type with certificate containing confirmed email address and personal data
+  ADDRESS = 2; // Key type with certificate containing confirmed email address, personal data and address
+  BUSINESS = 3; // Key type with certificate containing confirmed email address, personal data, company name and role
+}
+
+enum ResultCodeExtProtocol {
+  OK = 0; // Request was completed successfully, with most positive scenario.
+  PENDING = 1; // Waiting for user's response.
+  REFUSED = 2; // User refused the session.
+  TIMEOUT = 3; // There was a timeout, i.e. end user did not confirm or refuse the operation within given timeframe.
+  UNUSABLE = 4; // For some reason, this third party request cannot be completed.
+  WRONG_VC = 5; // In case the three-choice verification code was requested, the user did not choose the correct verification code.
+  REVOKED = 6; // User's certificate is revoked.
+  INVALID_SIGNATURE = 7; // User sends invalid signature.
+  NOT_REGISTERED = 8; // Email address not present in the system.
+  NO_CERTIFICATE = 9; // User does not have a certificate of the requested level.
+  SECURITY_EXCEPTION = 10; // Request has invalid signature.
+  BLOCKED = 11; // Access key is not present in the system or revoked.
+  NOT_FOUND = 12; // Requested session not found.
+}

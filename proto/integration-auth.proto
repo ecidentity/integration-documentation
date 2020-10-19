@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option java_package = "io.ecidentity.protocol.authority";
+option java_multiple_files = true;
+
+import "protocol-types.proto";
+
+service IntegrationAuthService {
+  rpc init (InitAuthRequest) returns (InitAuthResponse) {}; // Initializes authorization session.
+  rpc check (AuthStatusRequest) returns (stream AuthStatusResponse) {}; // Returns stream of session states every three seconds until completed or expired or canceled.
+  rpc auth (InitAuthRequest) returns (stream AuthStatusResponse) {}; // Combines init and check together.
+  rpc cancel (CancelAuthRequest) returns (CancelAuthResponse) {}; // Cancels session.
+}
+
+message InitAuthRequest {
+  string access_key_id = 1; // Access key id
+  bytes signature = 2; // Request signature
+  InitAuthRequestPayload payload = 3;
+}
+
+message InitAuthRequestPayload {
+  string email = 1; //
+  bytes hash_to_sign = 2; //
+  bool with_report = 3; //
+  bool with_sanctions = 4; //
+  bool extract_subject = 5; //
+  KeyEntryTypeProtocol type = 6; //
+}
+
+message InitAuthResponse {
+  InitAuthResponsePayload payload = 1;
+  bytes signature = 2; // Response signature, verifiable with the public key inside the server certificate.
+}
+
+message InitAuthResponsePayload {
+  ResultCodeExtProtocol result_code = 1;
+  string session_id = 2; //
+  int64 expires_at = 3; //
+}
+
+message AuthStatusRequest {
+  string access_key_id = 1;
+  bytes signature = 2;
+  AuthStatusRequestPayload payload = 3;
+}
+
+message AuthStatusRequestPayload {
+  string sessionId = 1;
+}
+
+message AuthStatusResponse {
+  AuthStatusResponsePayload payload = 1;
+  bytes signature = 2;
+}
+
+message AuthStatusResponsePayload {
+  ResultCodeExtProtocol result_code = 1; //
+  string session_id = 2; //
+  bytes certificate = 3; //
+  bytes signed_hash = 4; //
+  bytes report = 5; //
+  map<string, string> subject = 6; //
+  repeated string sanctions = 7; //
+}
+
+message CancelAuthRequest {
+  string access_key_id = 1;
+  bytes signature = 2;
+  CancelAuthRequestPayload payload = 3;
+}
+
+message CancelAuthRequestPayload {
+  string session_id = 1;
+}
+
+message CancelAuthResponse {
+  CancelAuthResponsePayload payload = 1;
+  bytes signature = 2;
+}
+
+message CancelAuthResponsePayload {
+  ResultCodeExtProtocol result_code = 1;
+}

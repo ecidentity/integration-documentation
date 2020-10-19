@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option java_package = "io.ecidentity.protocol.authority";
+option java_multiple_files = true;
+
+import "protocol-types.proto";
+
+service IntegrationSignService {
+  rpc init (InitSignRequest) returns (stream InitSignResponse) {}; // Initializes signing session and returns stream of session states every three seconds until user confirms or rejects request.
+  rpc hash (SignHashRequest) returns (stream SignHashResponse) {}; // Updates session with hash and returns stream of session states every three seconds until completed or expired or canceled.
+  rpc cancel (CancelSignRequest) returns (CancelSignResponse) {}; // Cancels session.
+}
+
+message InitSignRequest {
+  string access_key_id = 1; //
+  bytes signature = 2; //
+  InitSignRequestPayload payload = 3;
+}
+
+message InitSignRequestPayload {
+  string email = 2; //
+  KeyEntryTypeProtocol type = 3; //
+}
+
+message InitSignResponse {
+  InitSignResponsePayload payload = 1;
+  bytes signature = 2; // Response signature, verifiable with the public key inside the server certificate.
+}
+
+message InitSignResponsePayload {
+  ResultCodeExtProtocol result_code = 1; //
+  string session_id = 2; //
+  bytes certificate = 3; //
+  int64 expires_at = 4; //
+}
+
+message SignHashRequest {
+  string access_key_id = 1;
+  bytes signature = 2;
+  SignHashRequestPayload payload = 3;
+}
+
+message SignHashRequestPayload {
+  string session_id = 1; //
+  bytes hash_to_sign = 2; //
+}
+
+message SignHashResponse {
+  SignHashResponsePayload payload = 1;
+  bytes signature = 2;
+}
+
+message SignHashResponsePayload {
+  ResultCodeExtProtocol result_code = 1; //
+  string session_id = 2; //
+  bytes signed_hash = 3; //
+}
+
+message CancelSignRequest {
+  string access_key_id = 1;
+  bytes signature = 2;
+  CancelSignRequestPayload payload = 3;
+}
+
+message CancelSignRequestPayload {
+  string session_id = 1;
+}
+
+message CancelSignResponse {
+  CancelSignResponsePayload payload = 1;
+  bytes signature = 2;
+}
+
+message CancelSignResponsePayload {
+  ResultCodeExtProtocol result_code = 1;
+}
