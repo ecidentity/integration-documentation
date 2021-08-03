@@ -38,7 +38,7 @@
         * [4.9.2. Example response](#492-example-response)
 * [5. GRPC API](#5-grpc-api)
     * [5.1. Protocol buffer files](#51-protocol-buffer-files)
-    * [5.2. Sample project](#52-sample-project)
+    * [5.2. Java SDK](#52-java-sdk)
 * [6. Session end result codes](#6-session-end-result-codes)
 * [7. Protocols](#7-protocols)
     * [7.1. Session protocol](#71-session-protocol)
@@ -399,9 +399,9 @@ This response is returned from GET method call that cancel session.
 
 Files for generating RPC services toy can find [here](proto/).
 
-## 5.2 Sample project
+## 5.2 Java sdk
 
-[Sample project in kotlin](https://github.com/ecidentity/integration-grpc-kotlin).
+[Link to project](https://github.com/ecidentity/ec-identity-java-sdk)
 
 # 6. Session end result codes
 
