@@ -48,8 +48,7 @@
 
 # 1. Introduction
 
-Third party interface offers the entry point to ECiD main use cases, i.e. authentication and signing.
-
+External API interface offers the entry point to ECiD main use cases, i.e. authentication and signing.
 The interface is to be used by all parties who wish consume ECiD services, i.e. ask end users to perform authorization and/or signing requests.
 
 ## 1.1. Terminology
@@ -68,12 +67,12 @@ The interface is to be used by all parties who wish consume ECiD services, i.e. 
 
 ECiDentity API is exposed over a REST & GRPC interface as described below.
 
-REST payloads are encoded using UTF-8. All requests support HTTP/1.1 only.
+REST payloads are encoded using UTF-8 and support HTTP/1.1 only.
 GRPC requests support HTTP/2.0 only.
 
 ## 3.1. Third Party registration
 
-To be able to use ECiDentity API, you must register your company at https://customer.ecidentity.io and sandbox is https://demo-customer.ecidentity.io.
+To be able to use ECiDentity API, you should send request to info@ecidentity.io and for demo register in sandbox is https://demo-customer.ecidentity.io.
 
 ## 3.2. Hash algorithms
 
@@ -128,7 +127,7 @@ In some cases, HTTP 4xx series error codes are used:
 * HTTP error code 400 - Insufficient or invalid request parameters.
 * HTTP error code 404 - object described in URL was not found in ECiDentity API.
 
-All 5xx series error codes indicate some kind of fatal server error.
+All 5xx series error codes indicate some kind of internal server error.
 
 ## 4.2. REST API authorization flow
 
@@ -155,7 +154,7 @@ email | string | + | Email of user to be authenticated.
 type | string | + | Level of certificate requested. "EMAIL" or "PERSONAL".
 hashToSign | string | + | SHA-256 random hash as hex encoded string.
 withReport | boolean |  | Used to request document verification report in pdf format. Default value is "false" to reduce request time.
-withSanctions | boolean |  | Used to search person in sanction list. Default value is "false" to reduce request time. Sanction check will be performed only when personal certificate requested. Default value is "false" to reduce request time.
+withSanctions | boolean |  | Used to search person in sanction list. Default value is "false" to reduce request time. Sanction check will be performed only when personal certificate requested.
 extractSubject | boolean |  | Used to add show details from certificate subject data. Default value is "false" to reduce request time.
 
 **Init authorization request:**
